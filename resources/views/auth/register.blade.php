@@ -12,7 +12,7 @@
 
             <div class="card-body">
                 <form method="POST" action="{{ route('register.store') }}"
-                    class=" flex flex-col gap-0.5 border rounded p-4 shadow-md">
+                    class=" flex flex-col items-center gap-0.75 border rounded p-4 shadow-md">
                     @csrf
 
                     <div>
@@ -75,7 +75,7 @@
                             @enderror
                         </div>
                     </div>
-                    <button type="submit" class="bg-blue-700 w-fit h-fit text-gray-200 px-2 py-1 rounded">
+                    <button type="submit" class="bg-blue-700 w-fit h-fit text-gray-200 px-2 py-0.75 rounded">
                         Register
                     </button>
                 </form>

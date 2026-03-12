@@ -6,8 +6,8 @@
             <div class="text-xl font-bold text-center">Login</div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('register.store') }}"
-                    class=" flex flex-col gap-0.5 border rounded p-4 shadow-md">
+                <form method="POST" action="{{ route('login.store') }}"
+                    class=" flex flex-col gap-0.75 items-center border rounded p-4 shadow-md">
                     @csrf
                     <div>
                         <label for="email">Email Address</label>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="bg-blue-700 w-fit h-fit text-gray-200 px-2 py-1 rounded">
+                    <button type="submit" class="bg-blue-700 cursor-pointer w-fit h-fit text-gray-200 px-2 py-0.5 rounded">
                         Login
                     </button>
                 </form>
