@@ -9,6 +9,11 @@
                 <form method="POST" action="{{ route('login.store') }}"
                     class=" flex flex-col gap-0.75 items-center border rounded p-4 shadow-md">
                     @csrf
+                    @error('error')
+                        <span class="text-red-800" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                     <div>
                         <label for="email">Email Address</label>
 

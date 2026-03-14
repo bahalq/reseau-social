@@ -17,7 +17,7 @@ class CheckGuest
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            return redirect()->route('home');
+            return redirect()->route('posts.index');
         }
         return $next($request);
     }

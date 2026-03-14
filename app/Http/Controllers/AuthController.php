@@ -26,7 +26,7 @@ class AuthController extends Controller
         }
         unset($validated['password_confirmation']);
         User::create($validated);
-        return redirect('login.show');
+        return redirect()->route('login.show');
     }
 
     public function getLogin()
@@ -35,16 +35,16 @@ class AuthController extends Controller
     }
 
     public function postLogin(Request $request)
-    {
+    {   
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = User::where('email', $request->email)->first();
-            Auth::login($user);
-            redirect()->route('welcome');
+            return redirect()->route('posts.index');
+        } else {
+            return back()->with('error', 'Invalid email or password');
         }
     }
     public function logout()
     {
         Auth::logout();
-        return redirect('login.show');
+        return redirect()->route('login.show');
     }
 }

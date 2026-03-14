@@ -3,25 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Posts;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostsController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $posts = Posts::all();
-        return view('posts.index', compact('posts'));
-    }
+        $posts = Posts::with('user')->latest()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('posts.create');
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -32,10 +29,23 @@ class PostsController extends Controller
         $validated = $request->validate([
             'content' => 'required|string',
         ]);
-        Posts::create($validated);
-        return redirect()->route('posts.index');
-    }
 
+        $post = Posts::create([
+            'content' => $validated['content'],
+            'user_id' => Auth::id(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'post' => [
+                'id' => $post->id,
+                'content' => $post->content,
+                'created_at_human' => $post->created_at->diffForHumans(),
+                'user' => $post->user,
+                'is_owner' => Auth::id() === $post->user_id
+            ]
+        ]);
+    }
     /**
      * Display the specified resource.
      */
@@ -73,9 +83,9 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->authorize('delete', Posts::find($id));
-        $post = Posts::find($id);
+        $this->authorize('delete', Posts::findOrFail($id));
+        $post = Posts::findOrFail($id);
         $post->delete();
-        return redirect()->route('posts.index');
+        return response()->json(['success' => true]);
     }
 }
