@@ -15,5 +15,4 @@ Route::post('/register', [AuthController::class, 'postRegister'])->name('registe
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::resource('posts', PostsController::class)->except(['create'])
 ->middleware('check.auth');
-Route::post('/likes', [LikesController::class, 'store'])->name('likes.store');
-Route::delete('/likes', [LikesController::class, 'destroy'])->name('likes.destroy');
+Route::match(['GET', 'POST'], '/posts/{post_id}/like', [LikesController::class, 'toggle'])->name('likes.toggle');

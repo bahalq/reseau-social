@@ -17,7 +17,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Posts::with('user')->latest()->get();
+        $posts = Posts::withCount('likes')->latest()->get();
 
         return view('posts.index', compact('posts'));
     }
@@ -43,6 +43,7 @@ class PostsController extends Controller
                 'content' => $post->content,
                 'created_at_human' => $post->created_at->diffForHumans(),
                 'user' => $post->user,
+                'likes_count' => $post->likes()->count()
             ]
         ]);
     }

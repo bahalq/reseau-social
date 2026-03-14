@@ -13,7 +13,8 @@ class LikesController extends Controller
     {
         $post = Posts::find($request->post_id);
         $post->likes()->toggle(Auth::id());
-        $count = $post->likes()->count();
-        return response()->json(['count'=> $count]);
+        $likes = $post->likes()->get();
+        
+        return response()->json(['success' => true, 'likesCount' => $likes->count()]);
     }
 }

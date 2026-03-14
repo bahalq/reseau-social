@@ -8,6 +8,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
     <title>@yield('title','Social Network')</title>
+    @yield('styles')
 </head>
 
 <body>
