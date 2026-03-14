@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
 {
@@ -42,7 +43,6 @@ class PostsController extends Controller
                 'content' => $post->content,
                 'created_at_human' => $post->created_at->diffForHumans(),
                 'user' => $post->user,
-                'is_owner' => Auth::id() === $post->user_id
             ]
         ]);
     }
@@ -60,9 +60,11 @@ class PostsController extends Controller
      */
     public function edit(string $id)
     {
-        $this->authorize('update', Posts::find($id));
         $post = Posts::find($id);
-        return view('posts.edit', compact('post'));
+        return response()->json([
+            "post" => $post,
+            'authorized' => Gate::allows('delete', $post)
+        ]);
     }
 
     /**
@@ -75,7 +77,10 @@ class PostsController extends Controller
         ]);
         $post = Posts::find($id);
         $post->update($validated);
-        return redirect()->route('posts.show', $id);
+        return response()->json([
+            'success' => true,
+            'post' => $post
+        ]);
     }
 
     /**
