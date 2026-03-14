@@ -62,10 +62,17 @@ class PostsController extends Controller
     public function edit(string $id)
     {
         $post = Posts::find($id);
-        return response()->json([
-            "post" => $post,
-            'authorized' => Gate::allows('delete', $post)
-        ]);
+        if (Gate::allows('delete', $post)) {
+            return response()->json([
+                "post" => $post,
+                'authorized' => Gate::allows('delete', $post)
+            ]);
+        } else {
+
+            return response()->json([
+                'authorized' => false
+            ]);
+        }
     }
 
     /**
