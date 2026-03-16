@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Posts;
 use App\Models\User;
+use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -52,6 +53,11 @@ class PostsController extends Controller
      */
     public function show(string $id)
     {
+        $hashedid = new Hashids();
+        $id = $hashedid->decode($id)[0] ?? null;
+        if (!$id) {
+            return redirect('notfound');
+        }
         $post = Posts::find($id);
         return view('posts.show', compact('post'));
     }

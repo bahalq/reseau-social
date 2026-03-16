@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Model;
 
 class Posts extends Model
@@ -16,5 +17,10 @@ class Posts extends Model
     }
     public function likes() {
         return $this->belongsToMany(User::class,'likes', 'post_id', 'user_id');
+    }
+
+    public function hashedid() {
+        $hashedid = new Hashids();
+        return $hashedid->encode($this->id);
     }
 }

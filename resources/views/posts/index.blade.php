@@ -18,7 +18,7 @@
         <div id="posts-container" class="flex flex-col items-center
         gap-4 mt-4 w-full">
             @foreach ($posts as $post)
-                <div ondblclick="window.location = '{{ route('posts.show', $post->id) }}'" class="card relative border p-2 rounded w-full md:w-1/2">
+                <div ondblclick="window.location = '{{ route('posts.show', $post->hashedid()) }}'" class="card relative border p-2 rounded w-full md:w-1/2">
                     <span class="text-sm text-gray-600 font-bold">
                         {{ $post->user->name }}
                     </span>
