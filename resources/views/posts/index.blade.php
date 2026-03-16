@@ -16,9 +16,9 @@
         </form>
         <span id="adderr" class="text-red-800"></span>
         <div id="posts-container" class="flex flex-col items-center
-                                                                                         gap-4 mt-4 w-full">
+        gap-4 mt-4 w-full">
             @foreach ($posts as $post)
-                <div class="card relative border p-2 rounded w-full md:w-1/2">
+                <div ondblclick="window.location = '{{ route('posts.show', $post->id) }}'" class="card relative border p-2 rounded w-full md:w-1/2">
                     <span class="text-sm text-gray-600 font-bold">
                         {{ $post->user->name }}
                     </span>
@@ -30,12 +30,11 @@
                         @if (Auth::check() && Auth::id() === $post->user_id)
                             <div class="group">
                                 <span class="absolute top-0 right-3 font-semibold text-xl">...</span>
-                                <div
-                                    class="hidden px-3 group-hover:block text-xs absolute top-7
-                                                                                                                                                                                                                                                         right-3 bg-white border-gray-200 border rounded shadow">
-                                    <a id="edit" data="{{route('posts.edit', $post->id)}}"
-                                        class="block px-2 py-1 cursor-pointer hover:scale-95 w-full">Edit</a>
-                                    <form class="delete-form" action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                                <div class="hidden px-3 group-hover:block text-xs absolute top-7
+                                right-3 bg-white border-gray-200 border rounded shadow">
+                                    <a data="posts/{{ $post->id }}/edit"
+                                        class="edit-btn block px-2 py-1 cursor-pointer hover:scale-95 w-full">Edit</a>
+                                    <form class="delete-form" action="/posts/{{ $post->id }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
@@ -138,7 +137,7 @@
                         <div class="hidden px-3 group-hover:block text-xs absolute top-7
                         right-3 bg-white border-gray-200 border rounded shadow">
 
-                        <a id="edit" data="posts/${post.id}/edit" class="block px-2 py-1 cursor-pointer hover:scale-95 w-full">Edit</a>
+                        <a data="posts/${post.id}/edit" class="edit-btn block px-2 py-1 cursor-pointer hover:scale-95 w-full">Edit</a>
 
                         <form class="delete-form" action="/posts/${post.id}" method="POST">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -200,7 +199,7 @@
     </script>
     <script>
         document.addEventListener('click', function (e) {
-            if (e.target.id !== 'edit') return;
+            if (!e.target.classList.contains('edit-btn')) return;
             if (e.target.closest('.card-body').querySelector('textarea') !== null) return;
 
             const url = e.target.getAttribute('data');
@@ -251,8 +250,8 @@
                         });
                     } else {
                         const authorized = document.createElement('span');
-                        span.textContent = 'You are not authorized to edit this post';
-                        span.classList.add('text-red-800')
+                        authorized.textContent = 'You are not authorized to edit this post';
+                        authorized.classList.add('text-red-800');
 
                         e.target.closest('.card-body').appendChild(authorized);
                     }

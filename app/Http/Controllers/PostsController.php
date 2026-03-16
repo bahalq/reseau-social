@@ -65,7 +65,7 @@ class PostsController extends Controller
         if (Gate::allows('delete', $post)) {
             return response()->json([
                 "post" => $post,
-                'authorized' => Gate::allows('delete', $post)
+                'authorized' => true
             ]);
         } else {
 
