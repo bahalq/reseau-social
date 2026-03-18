@@ -17,8 +17,9 @@
         <span id="adderr" class="text-red-800"></span>
         <div id="posts-container" class="flex flex-col items-center
         gap-4 mt-4 w-full">
-            @foreach ($posts as $post)
-                <div ondblclick="window.location = '{{ route('posts.show', $post->hashedid()) }}'" class="card relative border p-2 rounded w-full md:w-1/2">
+        @each('posts.view', $posts, 'post')
+            {{-- @foreach ($posts as $post) --}}
+                {{-- <div ondblclick="window.location = '{{ route('posts.show', $post->hashedid()) }}'" class="card relative border p-2 rounded w-full md:w-1/2">
                     <span class="text-sm text-gray-600 font-bold">
                         {{ $post->user->name }}
                     </span>
@@ -30,9 +31,13 @@
                         @if (Auth::check() && Auth::id() === $post->user_id)
                             <div class="group">
                                 <span class="absolute top-0 right-3 font-semibold text-xl">...</span>
-                                <div class="hidden px-3 group-hover:block text-xs absolute top-7
+                                <div class="hidden z-20 px-3 group-hover:block text-xs absolute top-6
                                 right-3 bg-white border-gray-200 border rounded shadow">
-                                    <a data="posts/{{ $post->id }}/edit"
+                                    <a onclick="navigator.clipboard.writeText('{{ route('posts.show', $post->hashedid()) }}')"
+                                        class="block px-2 py-1 cursor-pointer hover:scale-95 w-full">Copy Link</a>
+                                    <a onclick="window.location = '{{ route('posts.show', $post->hashedid())  }}'"
+                                        class="block px-2 py-1 cursor-pointer hover:scale-95 w-full">Show</a>
+                                    <a data="{{ route('posts.edit', $post->id) }}"
                                         class="edit-btn block px-2 py-1 cursor-pointer hover:scale-95 w-full">Edit</a>
                                     <form class="delete-form" action="/posts/{{ $post->id }}" method="POST">
                                         @csrf
@@ -57,8 +62,8 @@
                         </button>
                         <span>{{$post->likes_count}}</span>
                     </div>
-                </div>
-            @endforeach
+                </div> --}}
+            {{-- @endforeach --}}
         </div>
     </div>
 @endsection
